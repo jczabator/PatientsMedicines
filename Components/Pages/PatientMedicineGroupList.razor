@@ -1,0 +1,35 @@
+﻿@page "/patientMedicineGroupList"
+@using PatientsMedicines.DataLayer
+@using PatientsMedicines.UseCases.GetPatientMedicineGroups
+@inject NavigationManager NavManager
+@inject IGetPatientMedicineGroups GetPatientMedicineGroupsUseCase
+
+<h3>PatientMedicineGroupList</h3>
+<hr />
+<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CreateNewPatientMedicineGroup">Create Patient Medicine Group</MudButton>
+<hr />
+<MudDataGrid Items="PatientMedicineGroups">
+  <Columns>
+    <PropertyColumn Property="x => x.MedicineGroup.Group.Name" Title="Medicine Group Name" />
+    <PropertyColumn Property="x => x.MedicineGroup.GroupType" Title="Medicine Group Type" />
+    <PropertyColumn Property="x => x.MedicineGroup.Medicine == null ? NoMedicineText : x.MedicineGroup.Medicine.Name" Title="Medicine Name" />
+    <PropertyColumn Property="x => x.MedicineGroup.Medicine == null ? NoMedicineText : x.MedicineGroup.Medicine.SerialNumber" Title="Medicine Serial Number" />
+    <PropertyColumn Property="x => x.Patient.FirstName" Title="Patient First Name" />
+    <PropertyColumn Property="x => x.Patient.LastName" Title="Patient Last Name" />
+  </Columns> 
+</MudDataGrid>
+
+@code {
+    string NoMedicineText = "No Medicine";    
+    IEnumerable<PatientMedicineGroup> PatientMedicineGroups = new List<PatientMedicineGroup>();
+
+    async void CreateNewPatientMedicineGroup()
+    {
+        NavManager.NavigateTo("/createNewPatientMedicineGroup");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        PatientMedicineGroups = await GetPatientMedicineGroupsUseCase.GetPatientMedicineGroups();
+    }
+}
