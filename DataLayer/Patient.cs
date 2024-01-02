@@ -12,5 +12,6 @@
         public decimal Height { get; set; }
         public decimal Weight { get; set; }
         public decimal BMI { get; set; }
+        public IList<PatientMedicineGroup> PatientMedicineGroups { get; set; } 
     }
 }
