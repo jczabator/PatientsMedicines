@@ -1,8 +1,7 @@
-﻿namespace PatientsMedicines.DataLayer
+﻿namespace PatientsMedicines.DataLayer;
+
+public enum Gender
 {
-    public enum Gender
-    {
-        Female = 0,
-        Male = 1
-    }
+    Female = 0,
+    Male = 1
 }

@@ -1,8 +1,8 @@
-﻿namespace PatientsMedicines.DataLayer
+﻿namespace PatientsMedicines.DataLayer;
+
+public enum GroupType
 {
-    public enum GroupType
-    {
-        Normal = 0,
-        Control = 1
-    }
+    Normal = 0,
+    Control = 1
 }
+
