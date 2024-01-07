@@ -1,5 +1,6 @@
 ﻿namespace PatientsMedicines.DataLayer;
 
+//TODO: not needed table
 public class Group
 {
     public int Id { get; set; }

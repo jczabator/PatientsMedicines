@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.IO;
 
 namespace PatientsMedicines.DataLayer;
 
@@ -9,6 +10,8 @@ public class MedicineResearchDbContext : DbContext
     public DbSet<MedicineGroup> MedicineGroups { get; set; }
     public DbSet<Patient> Patients { get; set; }
     public DbSet<PatientMedicineGroup> PatientMedicineGroups { get; set; }
+    public DbSet<Address> Addresses { get; set; }
+    public DbSet<PatientAddress> PatientAddresses { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -31,7 +34,7 @@ public class MedicineResearchDbContext : DbContext
 
         modelBuilder.Entity<Patient>().HasData(new Patient { Id = 1, FirstName = "Jan", LastName = "Kowalski", Age = 45, 
             BirthDate = DateOnly.FromDateTime(DateTime.Now.AddYears(-45)), Gender = Gender.Male, SocialNumber = "72033075515", 
-            Height = 175, Weight = 80, BMI = 27
+            Height = 175, Weight = 80, BMI = 27, EmailAddress = "jan.kowalski@email.com", PhoneNumber = "123456789"
         });
 
         modelBuilder.Entity<Patient>().HasData(new Patient
@@ -45,10 +48,27 @@ public class MedicineResearchDbContext : DbContext
             SocialNumber = "72033075515",
             Height = 155,
             Weight = 70,
-            BMI = 30
+            BMI = 30,
+            EmailAddress = "janina.kowalska@email.com",
+            PhoneNumber = "12345678"
         });
 
         modelBuilder.Entity<PatientMedicineGroup>().HasData(new PatientMedicineGroup { Id = 1, PatientId = 1, MedicineGroupId = 1 });
         modelBuilder.Entity<PatientMedicineGroup>().HasData(new PatientMedicineGroup { Id = 2, PatientId = 2, MedicineGroupId = 2 });
+
+        modelBuilder.Entity<Address>().HasData(new Address
+        {
+            Id = 1,
+            Street = "Borowska",
+            HouseNumber = "500A",
+            FlatNumber = "14C",
+            City = "Wrocław",
+            Country = "Polska",
+            PostalCode = "56-662",
+            Region = "Lower Silesia"
+        });
+
+        modelBuilder.Entity<PatientAddress>().HasData(new PatientAddress { Id = 1, AddressId = 1, PatientId = 1});
+        modelBuilder.Entity<PatientAddress>().HasData(new PatientAddress { Id = 2, AddressId = 1, PatientId = 2 });
     }
 }

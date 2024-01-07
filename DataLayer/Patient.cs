@@ -12,6 +12,8 @@ public class Patient
     public decimal Height { get; set; }
     public decimal Weight { get; set; }
     public decimal BMI { get; set; }
-    public IList<PatientMedicineGroup> PatientMedicineGroups { get; set; } 
-    //TODO: Add address
+    public string EmailAddress { get; set; }
+    public string PhoneNumber { get; set; }
+    public IList<PatientMedicineGroup> PatientMedicineGroups { get; set; }
+    public IList<PatientAddress> PatientAddresses { get; set; }
 }

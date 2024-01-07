@@ -1,8 +1,72 @@
 ﻿@page "/createNewPatientMedicineGroup"
+@using PatientsMedicines.DataLayer
+@using PatientsMedicines.Model
+@using PatientsMedicines.UseCases.CreatePatientMedicineGroup
+@using PatientsMedicines.UseCases.GetMedicineGroups
+@using PatientsMedicines.UseCases.GetPatients
+@inject IGetPatients GetPatientsUseCase
+@inject IGetMedicineGroups GetMedicineGroupsUseCase
+@inject ICreatePatientMedicineGroup CreatePatientMedicineGroupsUseCase
+@inject NavigationManager NavManager
 
 <h3>CreateNewPatientMedicineGroup</h3>
 <hr />
+<EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+  <DataAnnotationsValidator/>
+  <MudGrid>
+    <MudItem xs="12" sm="7">
+      <MudCard>
+        <MudCardContent>
+          <MudSelect T="int" @bind-Value="model.PatientId" Label="Patient" AnchorOrigin="Origin.BottomCenter">
+            @foreach(var patient in Patients)
+            {
+              <MudSelectItem Value="@patient.Id">@patient.FirstName @patient.LastName</MudSelectItem>
+            }
+          </MudSelect>
+          <MudSelect T="int" @bind-Value="model.MedicineGroupId" Label="Medicine Group" AnchorOrigin="Origin.BottomCenter">
+            @foreach(var medicineGroup in MedicineGroups)
+            {
+              @if(medicineGroup.Medicine is null)
+              {
+                <MudSelectItem Value="@medicineGroup.Id">Group: @medicineGroup.Group.Name, Group Type: @medicineGroup.GroupType, Medicine: No medicine </MudSelectItem>
+              }
+              else
+              {
+                <MudSelectItem Value="@medicineGroup.Id">Group: @medicineGroup.Group.Name, Group Type: @medicineGroup.GroupType, Medicine: @medicineGroup.Medicine.Name</MudSelectItem>
+              }              
+            }
+          </MudSelect>
+        </MudCardContent>
+        <MudCardActions>
+          <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudButton>
+        </MudCardActions>
+      </MudCard>
+    </MudItem>
+  </MudGrid>
+</EditForm>
 
 @code {
+    private IEnumerable<Patient> Patients = new List<Patient>();
+    private IEnumerable<MedicineGroup> MedicineGroups = new List<MedicineGroup>();
 
+    PatientMedicineGroupViewModel model = new PatientMedicineGroupViewModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Patients = await GetPatientsUseCase.GetPatients();
+        MedicineGroups = await GetMedicineGroupsUseCase.GetMedicineGroups();
+    }
+
+    private async Task OnValidSubmit(EditContext editContext)
+    {
+        StateHasChanged();
+        PatientMedicineGroup patientMedicineGroup = new PatientMedicineGroup
+        {
+            PatientId = model.PatientId,
+            MedicineGroupId = model.MedicineGroupId
+        };
+
+        await CreatePatientMedicineGroupsUseCase.CreatePatientMedicineGroup(patientMedicineGroup);
+        NavManager.NavigateTo("/patientMedicineGroupList");
+    }
 }

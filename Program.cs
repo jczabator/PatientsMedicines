@@ -1,7 +1,10 @@
 using MudBlazor.Services;
 using PatientsMedicines.Components;
 using PatientsMedicines.DataLayer;
+using PatientsMedicines.UseCases.CreatePatientMedicineGroup;
+using PatientsMedicines.UseCases.GetMedicineGroups;
 using PatientsMedicines.UseCases.GetPatientMedicineGroups;
+using PatientsMedicines.UseCases.GetPatients;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +15,9 @@ builder.Services.AddRazorComponents()
 builder.Services.AddMudServices();
 builder.Services.AddDbContext<MedicineResearchDbContext>();
 builder.Services.AddTransient<IGetPatientMedicineGroups, GetPatientMedicineGroupsUseCase>();
+builder.Services.AddTransient<IGetPatients, GetPatientsUseCase>();
+builder.Services.AddTransient<IGetMedicineGroups, GetMedicineGroupsUseCase>();
+builder.Services.AddTransient<ICreatePatientMedicineGroup, CreatePatientMedicineGroupUseCase>();
 
 var app = builder.Build();
 
